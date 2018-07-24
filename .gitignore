@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/WebServer/Storage/Software Requirements 3, 3rd Edition.pdf
+/WebServer/Storage/spectre.pdf
