@@ -5,9 +5,11 @@ using System.Web;
 using WebServer.Model;
 using System.Data;
 using System.Data.SqlClient;
+using WebServer.Interface;
+
 namespace WebServer.Dao
 {
-    public class PermitDAO:DAO
+    public class PermitDAO:DAO,IPermitDAO
     {
         public bool checkPermit(int fileId,string username)
         {
@@ -53,6 +55,16 @@ namespace WebServer.Dao
                 connection.Open();
                 return command.ExecuteNonQuery() == 1;
             }
+        }
+
+        public List<User> SharedUsers(int itemId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckPermit(int itemId, string username)
+        {
+            throw new NotImplementedException();
         }
     }
 }

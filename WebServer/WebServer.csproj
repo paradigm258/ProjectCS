@@ -71,16 +71,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\DAO.cs" />
-    <Compile Include="Dao\FileDAO.cs" />
+    <Compile Include="Dao\ItemDAO.cs" />
     <Compile Include="Dao\PermitDAO.cs" />
     <Compile Include="Dao\UserDAO.cs" />
     <Compile Include="Download.ashx.cs">
       <DependentUpon>Download.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Interface\IPermiDAO.cs" />
+    <Compile Include="Interface\IItemDao.cs" />
+    <Compile Include="Interface\IPermitDAO.cs" />
     <Compile Include="Interface\ISyncFolderDAO.cs" />
     <Compile Include="Interface\IUserDAO.cs" />
-    <Compile Include="Model\Item.cs" />
     <Compile Include="Model\Permit.cs" />
     <Compile Include="Model\SyncFolder.cs" />
     <Compile Include="Model\User.cs" />

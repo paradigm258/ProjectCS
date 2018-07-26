@@ -5,7 +5,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.Web;
-
+using WebServer.Interface;
 namespace WebServer
 {
     /// <summary>
@@ -22,13 +22,16 @@ namespace WebServer
             {
                 
                 Uri uri = context.Request.Url;
-
+                System.Diagnostics.Debug.WriteLine(uri.Fragment);
+                List<string> parts = new List<string>(uri.AbsoluteUri.Split('\\'));
+                IItemDAO dao = new Dao.ItemDAO();
+                int itemId = int.p
                 string fileName = "Software Requirements 3, 3rd Edition.pdf";
                 string filePath = context.Server.MapPath("~/Storage/");
                 FileInfo file = new FileInfo(filePath + fileName);
                 if (file.Exists)
                 {
-                    long length = file.Length/*file.Length*/;
+                    long length = file.Length;
                     string range = request.Headers["Range"];
                     long start = 0;
                     long end = 0;

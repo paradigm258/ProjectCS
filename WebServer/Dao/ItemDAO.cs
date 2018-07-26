@@ -5,11 +5,12 @@ using System.Web;
 using WebServer.Model;
 using System.Data;
 using System.Data.SqlClient;
+using WebServer.Interface;
 
 namespace WebServer.Dao
 {
    
-    public class FileDAO:DAO
+    public class ItemDAO:DAO,IItemDAO
     {
         
         public List<Item> Files(string owner)
