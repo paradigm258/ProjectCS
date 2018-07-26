@@ -18,7 +18,6 @@
                 <div id="logoMask" onclick="redirectToHomePage()">
                 </div>
                 <div id="activeUser">
-                    <asp:Label ID="lblActiveUser" runat="server" Text="Label"></asp:Label>
                 </div>
                 <div id="generalActions">
                 </div>
@@ -43,7 +42,8 @@
                         </td>
                     </tr>
                 </table>
-                <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
+                <asp:Label ID="lblError" class="lblError" runat="server" Text=""></asp:Label>
+                <asp:Label ID="lblNoti" class="lblNoti" runat="server" Text=""></asp:Label>
             </div>
         </div>
     </form>

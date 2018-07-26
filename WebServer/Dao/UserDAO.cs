@@ -28,7 +28,7 @@ namespace WebServer.Dao
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 string query = @"select count(*) from Users where username=@username";
-                SqlCommand command = new SqlCommand(query);
+                SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@username", username);
                 connection.Open();
                 return (int)command.ExecuteScalar() == 1;
@@ -71,7 +71,7 @@ namespace WebServer.Dao
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("insert into Users values(@username,@password,0,0,2048)");
+                SqlCommand command = new SqlCommand("insert into Users values(@username,@password,0,0,2048)", connection);
                 command.Parameters.AddWithValue("@username", username);
                 command.Parameters.AddWithValue("@password", password);
                 connection.Open();

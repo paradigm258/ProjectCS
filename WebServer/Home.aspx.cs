@@ -11,7 +11,12 @@ namespace WebServer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Session["username"] == null)
+            {
+                Response.Redirect("Login.aspx", true);
+                return;
+            }
+            lblActiveUser.Text = (String)Session["username"];
         }
     }
 }

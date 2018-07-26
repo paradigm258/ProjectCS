@@ -22,6 +22,8 @@ namespace WebServer
 
         protected void buttonSignup_Click(object sender, EventArgs e)
         {
+            lblError.Text = "";
+            lblNoti.Text = "";
             string username = txtUsername.Text;
             string password = txtPassword.Text;
             if (String.IsNullOrEmpty(username))
@@ -30,8 +32,8 @@ namespace WebServer
                 return;
             }
 
-            PermitDAO userDao = new PermitDAO();
-            if (userDao.checkPermit(1,"huy"))
+            UserDAO userDao = new UserDAO();
+            if (userDao.CheckUsername(username))
             {
                 lblError.Text = "Username already exists";
                 return;
@@ -42,8 +44,14 @@ namespace WebServer
                 lblError.Text = "Password field is empty";
                 return;
             }
+           
+            if (userDao.AddUser(username, password))
+            {
+                lblNoti.Text = "Sign up succeeded";
+                txtUsername.Text = "";
+            }
 
-            
+
         }
     }
 }

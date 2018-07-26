@@ -22,6 +22,7 @@ namespace WebServer
 
         protected void buttonLogin_Click(object sender, EventArgs e)
         {
+            lblError.Text = "";
             string username = txtUsername.Text;
             string password = txtPassword.Text;
             if (String.IsNullOrEmpty(username))
@@ -37,11 +38,15 @@ namespace WebServer
             }
 
             UserDAO userDao = new UserDAO();
-            if((new UserDAO()).CheckUser(username, password))
+            if(!userDao.CheckUser(username, password))
             {
                 lblError.Text = "Username or password is wrong";
-                //txtPassword.Text = "";
                 return;
+            }
+            else
+            {
+                Session["username"] = username;
+                Response.Redirect("Home.aspx", true);
             }
         }
     }

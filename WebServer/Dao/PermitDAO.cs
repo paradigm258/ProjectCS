@@ -13,13 +13,11 @@ namespace WebServer.Dao
     {
         public bool checkPermit(int itemId,string username)
         {
-            using (SqlConnection connection = new SqlConnection())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                connection.Open();
                 SqlCommand command = new SqlCommand("select count(*) from Permit where itemId=@itemID  and username = @user", connection);
                 command.Parameters.AddWithValue("@itemID", itemId);
                 command.Parameters.AddWithValue("@user", username);
-                connection.Close();
                 return (int)command.ExecuteScalar() == 1;
             }
         }
