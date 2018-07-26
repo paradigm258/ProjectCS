@@ -82,6 +82,7 @@
     <Compile Include="Dao\DAO.cs" />
     <Compile Include="Dao\ItemDAO.cs" />
     <Compile Include="Dao\PermitDAO.cs" />
+    <Compile Include="Dao\SyncFolderDAO.cs" />
     <Compile Include="Dao\UserDAO.cs" />
     <Compile Include="Download.ashx.cs">
       <DependentUpon>Download.ashx</DependentUpon>
@@ -94,7 +95,7 @@
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
     <Compile Include="Interface\IItemDao.cs" />
-    <Compile Include="Interface\IPermiDAO.cs" />
+    <Compile Include="Interface\IPermitDAO.cs" />
     <Compile Include="Interface\ISyncFolderDAO.cs" />
     <Compile Include="Interface\IUserDAO.cs" />
     <Compile Include="Login.aspx.cs">

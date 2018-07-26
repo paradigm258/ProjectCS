@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebServer.Interface
 {
-    interface IPermiDAO
+    interface IPermitDAO
     {
         List<Model.User> SharedUsers(int itemId);
         bool CheckPermit(int itemId, string username);
