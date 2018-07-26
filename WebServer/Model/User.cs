@@ -12,5 +12,9 @@ namespace WebServer.Model
         public bool IsAdmin { get; set; }
         public long UsedQuota { get; set; }
         public long MaxQuota { get; set; }
+        public override string ToString()
+        {
+            return Username;
+        }
     }
 }

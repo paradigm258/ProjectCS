@@ -20,9 +20,16 @@ namespace WebServer
             HttpResponse response = context.Response;
             try
             {
-                
-                Uri uri = context.Request.Url;
-
+                int itemId;
+                try
+                {
+                    itemId = int.Parse(request.Params["id"]);
+                }
+                catch
+                {
+                    response.Redirect("./Home");
+                    return;
+                }
                 string fileName = "Software Requirements 3, 3rd Edition.pdf";
                 string filePath = context.Server.MapPath("~/Storage/");
                 FileInfo file = new FileInfo(filePath + fileName);
