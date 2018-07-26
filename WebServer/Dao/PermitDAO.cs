@@ -26,7 +26,7 @@ namespace WebServer.Dao
         {
             using(SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("insert into Permit values(@id,@user)");
+                SqlCommand command = new SqlCommand("insert into Permit values(@id,@user)",connection);
                 command.Parameters.AddWithValue("@id", itemId);
                 command.Parameters.AddWithValue(@"user", user);
                 connection.Open();
@@ -38,7 +38,7 @@ namespace WebServer.Dao
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("delete from Permit where itemId=@id");
+                SqlCommand command = new SqlCommand("delete from Permit where itemId=@id",connection);
                 command.Parameters.AddWithValue("@id", itemId);
                 connection.Open();
                 return command.ExecuteNonQuery() > 1;
@@ -49,7 +49,7 @@ namespace WebServer.Dao
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("delete from Permit where itemId=@id and username=@user");
+                SqlCommand command = new SqlCommand("delete from Permit where itemId=@id and username=@user",connection);
                 command.Parameters.AddWithValue("@id", itemId);
                 command.Parameters.AddWithValue(@"user", user);
                 connection.Open();
