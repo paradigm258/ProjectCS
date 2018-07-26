@@ -5,9 +5,10 @@ using System.Web;
 
 namespace WebServer.Model
 {
-    public class Permit
+    public class SyncFolder
     {
+        public int id { get; set; }
         public int itemId { get; set; }
-        public string user { get; set; }
+        public string username { get; set; }
     }
 }
