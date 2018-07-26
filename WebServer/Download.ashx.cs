@@ -21,11 +21,7 @@ namespace WebServer
             try
             {
                 
-                Uri uri = context.Request.Url;
-                System.Diagnostics.Debug.WriteLine(uri.Fragment);
-                List<string> parts = new List<string>(uri.AbsoluteUri.Split('\\'));
-                IItemDAO dao = new Dao.ItemDAO();
-                int itemId = int.p
+
                 string fileName = "Software Requirements 3, 3rd Edition.pdf";
                 string filePath = context.Server.MapPath("~/Storage/");
                 FileInfo file = new FileInfo(filePath + fileName);

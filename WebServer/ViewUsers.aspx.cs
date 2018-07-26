@@ -11,8 +11,21 @@ namespace WebServer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Interface.IUserDAO user = new Dao.UserDAO();
-            GridView1.DataSource = user.GetAllUsers();
+        }
+
+        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            switch(e.CommandName)
+            {
+                case "Select":
+                    Response.Redirect("./User.aspx?username=" + e.CommandArgument);
+                    break;
+                case "Edit":
+
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

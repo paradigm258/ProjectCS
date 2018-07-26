@@ -8,6 +8,6 @@ namespace WebServer.Dao
 {
     public class DAO
     {
-        public static string ConnectionString = WebConfigurationManager.ConnectionStrings[0].ConnectionString;
+        public static string ConnectionString = WebConfigurationManager.ConnectionStrings["CSProject"].ConnectionString;
     }
 }

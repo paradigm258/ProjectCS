@@ -60,6 +60,7 @@
   <ItemGroup>
     <Content Include="CSS\style.css" />
     <Content Include="Download.ashx" />
+    <Content Include="AppLogin.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -68,6 +69,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="FileForm.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Image\cloudIcon.png" />
     <Content Include="Image\fileIcon.png" />
@@ -79,6 +81,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppLogin.ashx.cs">
+      <DependentUpon>AppLogin.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Dao\DAO.cs" />
     <Compile Include="Dao\ItemDAO.cs" />
     <Compile Include="Dao\PermitDAO.cs" />
@@ -86,6 +91,13 @@
     <Compile Include="Dao\UserDAO.cs" />
     <Compile Include="Download.ashx.cs">
       <DependentUpon>Download.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="FileForm.aspx.cs">
+      <DependentUpon>FileForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FileForm.aspx.designer.cs">
+      <DependentUpon>FileForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>

@@ -14,5 +14,9 @@ namespace WebServer.Model
         public bool isFolder { get; set; }
         public long size { get; set; }
         public int parent { get; set; }
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }

@@ -9,12 +9,13 @@ using WebServer.Interface;
 
 namespace WebServer.Dao
 {
-    public class UserDAO:DAO, IUserDAO
+    public class UserDAO : DAO, IUserDAO
     {
         public bool CheckUser(string username, string password)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString)) {
-                string query = @"select count(*) from User where username=@username and password=@password";
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string query = @"select count(*) from Users where username=@username and password=@password";
                 SqlCommand command = new SqlCommand(query);
                 command.Parameters.AddWithValue("@username", username);
                 command.Parameters.AddWithValue("@password", password);
@@ -26,7 +27,7 @@ namespace WebServer.Dao
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string query = @"select count(*) from User where username=@username";
+                string query = @"select count(*) from Users where username=@username";
                 SqlCommand command = new SqlCommand(query);
                 command.Parameters.AddWithValue("@username", username);
                 connection.Open();
@@ -35,7 +36,7 @@ namespace WebServer.Dao
         }
         public User GetUser(string username)
         {
-            string query = @"select * from User where username = @user";
+            string query = @"select * from Users where username = @user";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             da.SelectCommand.Parameters.AddWithValue("@user", username);
             DataTable dt = new DataTable();
@@ -44,7 +45,7 @@ namespace WebServer.Dao
             {
                 DataRow dr = dt.Rows[0];
                 return new User()
-                { 
+                {
                     Username = (string)dr["username"],
                     Password = (string)dr["password"]
                 };
@@ -53,23 +54,24 @@ namespace WebServer.Dao
         }
         public List<String> ShareAble(int fileId, string keyword)
         {
-            string query = @"select username from User where username in (select username from User except select username from Permit where fileID=@id) and username like @keyword";
+            string query = @"select username from Users where username in (select username from Users except select username from Permit where fileID=@id) and username like @keyword";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             da.SelectCommand.Parameters.AddWithValue("@id", fileId);
             da.SelectCommand.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<string> list = new List<string>();
-            foreach(DataRow r in dt.Rows){
+            foreach (DataRow r in dt.Rows)
+            {
                 list.Add((string)r["username"]);
             }
             return list;
         }
-        public bool AddUser(string username,string password)
+        public bool AddUser(string username, string password)
         {
-            using(SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("insert into User values(@username,@password,0,0,2048)");
+                SqlCommand command = new SqlCommand("insert into Users values(@username,@password,0,0,2048)");
                 command.Parameters.AddWithValue("@username", username);
                 command.Parameters.AddWithValue("@password", password);
                 connection.Open();
@@ -80,9 +82,9 @@ namespace WebServer.Dao
 
         public bool DeleteUser(string username)
         {
-            using(SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("delete from User where username=@username", connection);
+                SqlCommand command = new SqlCommand("delete from Users where username=@username", connection);
                 command.Parameters.AddWithValue("@username", username);
                 connection.Open();
                 return command.ExecuteNonQuery() == 1;
@@ -90,12 +92,12 @@ namespace WebServer.Dao
         }
         public List<User> GetAllUsers()
         {
-            string query = @"select * from User";
+            string query = @"select * from Users";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<User> List = new List<User>();
-            foreach(DataRow r in dt.Rows)
+            foreach (DataRow r in dt.Rows)
             {
                 List.Add(new User()
                 {
@@ -108,11 +110,11 @@ namespace WebServer.Dao
             }
             return List;
         }
-        public bool UpdateQuota(string username,long quota)
+        public bool UpdateQuota(string username, long quota)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("update User set quota=@quota where username=@username");
+                SqlCommand command = new SqlCommand("update Users set quota=@quota where username=@username");
                 command.Parameters.AddWithValue("@username", username);
                 command.Parameters.AddWithValue("@quota", quota);
                 connection.Open();
@@ -120,7 +122,7 @@ namespace WebServer.Dao
             }
         }
 
-        public List<string> Top20ShareableUsers(int id,string search)
+        public List<string> Top20ShareableUsers(int id, string search)
         {
             string query = @"select username from Users where username in (select username from User except select username from Permit where itemID=@id) and username like @keyword";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
@@ -129,7 +131,7 @@ namespace WebServer.Dao
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<string> list = new List<string>();
-            for (int i=0;i<20;i++)
+            for (int i = 0; i < 20; i++)
             {
                 DataRow row = dt.Rows[i];
                 list.Add((string)row["username"]);
@@ -139,14 +141,14 @@ namespace WebServer.Dao
 
         public bool UpdateUsedQuota(string username, int newUsedQuota)
         {
-            using(SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 string query = @"update Users set usedQuota=@quota where username=@user";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@quota", newUsedQuota);
                 command.Parameters.AddWithValue("@user", username);
                 connection.Open();
-                return command.ExecuteNonQuery()==1;
+                return command.ExecuteNonQuery() == 1;
             }
         }
 
