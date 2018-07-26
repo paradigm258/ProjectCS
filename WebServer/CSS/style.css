@@ -10,6 +10,8 @@
     position: fixed;
     background-color: #CCC;
     box-shadow: 0 8px 6px -3px grey;
+    top: 0px;
+    left: 0px;
 }
 
 #logo{
@@ -46,4 +48,41 @@
     flex-direction: row;
     background: red;
     justify-content: space-around;
+}
+
+/*login*/
+
+#login #mainDiv {
+    position: fixed;
+    top: 30%;
+    left: 30%;
+    height: 30%;
+    width: 40%;
+    margin: 0;
+    padding: 2% 1% 2% 1%;
+    display: inline-block;
+    text-align: center;
+    background-color: #6495ED;
+    box-shadow: 0 8px 6px -3px grey
+}
+
+/*signup*/
+#login #mainDiv {
+    position: fixed;
+    top: 30%;
+    left: 30%;
+    height: 30%;
+    width: 40%;
+    margin: 0;
+    padding: 2% 1% 2% 1%;
+    display: inline-block;
+    text-align: center;
+    background-color: #6495ED;
+    box-shadow: 0 8px 6px -3px grey
+}
+
+/*common function*/
+
+.lblError {
+    color: red;
 }
