@@ -5,11 +5,12 @@ using System.Web;
 using WebServer.Model;
 using System.Data;
 using System.Data.SqlClient;
+using WebServer.Interface;
 
 namespace WebServer.Dao
 {
    
-    public class FileDAO:DAO
+    public class ItemDAO:DAO, IItemDao
     {
         
         public List<Item> Files(string owner)
@@ -130,6 +131,51 @@ namespace WebServer.Dao
                 connection.Open();
                 return command.ExecuteNonQuery() == 1;
             }
+        }
+
+        public List<Item> GetAllItemsWithNullParent(string owner)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Item> GetAllItemsWithParent(string owner, int parent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Item GetItem(string owner, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Item GetItem(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Item> GetAllSharedItems(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckItem(string owner, string itemName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateItem(int id, string name, bool isPublic, long size, int parent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddItem(string name, string owner, bool isPublic, bool isFolder, long size, int parent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteItem(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
