@@ -9,8 +9,6 @@ namespace WebServer.Interface
 {
     interface IUserDAO
     {
-        String ConnectionString { get; set; }
-
         bool CheckUser(string username, string password); // check dung' hay k
         bool CheckUsername(string username); //check co' username chua //true= co'
         User GetUser(string username);

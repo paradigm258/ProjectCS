@@ -5,10 +5,11 @@ using System.Web;
 using WebServer.Model;
 using System.Data;
 using System.Data.SqlClient;
+using WebServer.Interface;
 
 namespace WebServer.Dao
 {
-    public class UserDAO:DAO
+    public class UserDAO:DAO, IUserDAO
     {
         public bool CheckUserLogin(string username, string password)
         {
@@ -118,6 +119,46 @@ namespace WebServer.Dao
                 connection.Open();
                 return command.ExecuteNonQuery() == 1;
             }
+        }
+
+        public bool CheckUser(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckUsername(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetUser(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> Top20ShareableUsers(string search)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddUser(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<User> GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateUsedQuota(string username, int newUsedQuota)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateMaxQuota(string username, int newMaxQuota)
+        {
+            throw new NotImplementedException();
         }
     }
 }
