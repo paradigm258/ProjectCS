@@ -16,7 +16,7 @@ namespace WebServer.Dao
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 string query = @"select count(*) from Users where username=@username and password=@password";
-                SqlCommand command = new SqlCommand(query);
+                SqlCommand command = new SqlCommand(query,connection);
                 command.Parameters.AddWithValue("@username", username);
                 command.Parameters.AddWithValue("@password", password);
                 connection.Open();
@@ -165,22 +165,5 @@ namespace WebServer.Dao
             }
         }
 
-        public List<string> Top20ShareableUsers(int itemId, string search)
-        {
-            string query = @"select username from Users where username in 
-(select username from Users except select username from Permit where itemID=@id) and username like @keyword";
-            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
-            da.SelectCommand.Parameters.AddWithValue("@id", itemId);
-            da.SelectCommand.Parameters.AddWithValue("@keyword", "%" + search + "%");
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            List<string> list = new List<string>();
-            for (int i = 0; i < 20; i++)
-            {
-                DataRow row = dt.Rows[i];
-                list.Add((string)row["username"]);
-            }
-            return list;
-        }
     }
 }
