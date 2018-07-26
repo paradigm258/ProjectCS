@@ -7,7 +7,7 @@ namespace WebServer.Model
 {
     public class Permit
     {
-        public int itemId { get; set; }
-        public string user { get; set; }
+        public int ItemId { get; set; }
+        public string User { get; set; }
     }
 }

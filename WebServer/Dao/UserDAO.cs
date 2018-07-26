@@ -11,7 +11,7 @@ namespace WebServer.Dao
 {
     public class UserDAO:DAO, IUserDAO
     {
-        public bool CheckUserLogin(string username, string password)
+        public bool CheckUser(string username, string password)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString)) {
                 string query = @"select count(*) from User where username=@username and password=@password";
@@ -22,7 +22,7 @@ namespace WebServer.Dao
                 return (int)command.ExecuteScalar() == 1;
             }
         }
-        public bool CheckUserExist(string username)
+        public bool CheckUsername(string username)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
@@ -33,7 +33,7 @@ namespace WebServer.Dao
                 return (int)command.ExecuteScalar() == 1;
             }
         }
-        public User User(string username)
+        public User GetUser(string username)
         {
             string query = @"select * from User where username = @user";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
@@ -45,8 +45,8 @@ namespace WebServer.Dao
                 DataRow dr = dt.Rows[0];
                 return new User()
                 { 
-                    username = (string)dr["username"],
-                    password = (string)dr["password"]
+                    Username = (string)dr["username"],
+                    Password = (string)dr["password"]
                 };
             }
             return null;
@@ -65,31 +65,18 @@ namespace WebServer.Dao
             }
             return list;
         }
-        public bool AddUser(User user)
+        public bool AddUser(string username,string password)
         {
             using(SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("insert into User values(@username,@password,@quota)");
-                command.Parameters.AddWithValue("@username", user.username);
-                command.Parameters.AddWithValue("@password", user.password);
-                command.Parameters.AddWithValue("@quota", user.quota);
+                SqlCommand command = new SqlCommand("insert into User values(@username,@password,0,0,2048)");
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", password);
                 connection.Open();
                 return command.ExecuteNonQuery() == 1;
             }
         }
 
-        public bool UpdateUser(User user)
-        {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                SqlCommand command = new SqlCommand("update User set password = @password, quota=@quota where username=@username");
-                command.Parameters.AddWithValue("@username", user.username);
-                command.Parameters.AddWithValue("@password", user.password);
-                command.Parameters.AddWithValue("@quota", user.quota);
-                connection.Open();
-                return command.ExecuteNonQuery() == 1;
-            }
-        }
 
         public bool DeleteUser(string username)
         {
@@ -101,13 +88,25 @@ namespace WebServer.Dao
                 return command.ExecuteNonQuery() == 1;
             }
         }
-        public DataTable Users()
+        public List<User> GetAllUsers()
         {
             string query = @"select * from User";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
-            return dt;
+            List<User> List = new List<User>();
+            foreach(DataRow r in dt.Rows)
+            {
+                List.Add(new User()
+                {
+                    Username = (string)r[0],
+                    Password = (string)r[1],
+                    IsAdmin = (bool)r[2],
+                    UsedQuota = (int)r[3],
+                    MaxQuota = (int)r[4]
+                });
+            }
+            return List;
         }
         public bool UpdateQuota(string username,long quota)
         {
@@ -121,44 +120,47 @@ namespace WebServer.Dao
             }
         }
 
-        public bool CheckUser(string username, string password)
+        public List<string> Top20ShareableUsers(int id,string search)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool CheckUsername(string username)
-        {
-            throw new NotImplementedException();
-        }
-
-        public User GetUser(string username)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<string> Top20ShareableUsers(string search)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AddUser(string username, string password)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<User> GetAllUsers()
-        {
-            throw new NotImplementedException();
+            string query = @"select username from Users where username in (select username from User except select username from Permit where itemID=@id) and username like @keyword";
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
+            da.SelectCommand.Parameters.AddWithValue("@id", id);
+            da.SelectCommand.Parameters.AddWithValue("@keyword", "%" + search + "%");
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<string> list = new List<string>();
+            for (int i=0;i<20;i++)
+            {
+                DataRow row = dt.Rows[i];
+                list.Add((string)row["username"]);
+            }
+            return list;
         }
 
         public bool UpdateUsedQuota(string username, int newUsedQuota)
         {
-            throw new NotImplementedException();
+            using(SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string query = @"update Users set usedQuota=@quota where username=@user";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@quota", newUsedQuota);
+                command.Parameters.AddWithValue("@user", username);
+                connection.Open();
+                return command.ExecuteNonQuery()==1;
+            }
         }
 
         public bool UpdateMaxQuota(string username, int newMaxQuota)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string query = @"update Users set maxQuota=@quota where username=@user";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@quota", newMaxQuota);
+                command.Parameters.AddWithValue("@user", username);
+                connection.Open();
+                return command.ExecuteNonQuery() == 1;
+            }
         }
     }
 }

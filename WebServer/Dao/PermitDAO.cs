@@ -11,46 +11,46 @@ namespace WebServer.Dao
 {
     public class PermitDAO:DAO,IPermitDAO
     {
-        public bool checkPermit(int fileId,string username)
+        public bool checkPermit(int itemId,string username)
         {
             using (SqlConnection connection = new SqlConnection())
             {
-                SqlCommand command = new SqlCommand("select count(*) from Permit where fileID=@fileID  and username = @user", connection);
-                command.Parameters.AddWithValue("@fileID", fileId);
+                SqlCommand command = new SqlCommand("select count(*) from Permit where itemId=@itemID  and username = @user", connection);
+                command.Parameters.AddWithValue("@itemID", itemId);
                 command.Parameters.AddWithValue("@user", username);
                 return (int)command.ExecuteScalar() == 1;
             }
         }
 
-        public bool AddPermit(int fileId, string user)
+        public bool AddPermit(int itemId, string user)
         {
             using(SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 SqlCommand command = new SqlCommand("insert into Permit values(@id,@user)");
-                command.Parameters.AddWithValue("@id", fileId);
+                command.Parameters.AddWithValue("@id", itemId);
                 command.Parameters.AddWithValue(@"user", user);
                 connection.Open();
                 return command.ExecuteNonQuery() == 1 ? true : false;
             }
         }
 
-        public bool DeleteAllPermit(int fileId)
+        public bool DeleteAllPermit(int itemId)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("delete from Permit where id=@id");
-                command.Parameters.AddWithValue("@id", fileId);
+                SqlCommand command = new SqlCommand("delete from Permit where itemId=@id");
+                command.Parameters.AddWithValue("@id", itemId);
                 connection.Open();
                 return command.ExecuteNonQuery() > 1;
             }
         }
 
-        public bool DeleteUserPermit(int fileId,string user)
+        public bool DeleteUserPermit(int itemId,string user)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("delete from Permit where id=@id and username=@user");
-                command.Parameters.AddWithValue("@id", fileId);
+                SqlCommand command = new SqlCommand("delete from Permit where itemId=@id and username=@user");
+                command.Parameters.AddWithValue("@id", itemId);
                 command.Parameters.AddWithValue(@"user", user);
                 connection.Open();
                 return command.ExecuteNonQuery() == 1;
@@ -59,12 +59,36 @@ namespace WebServer.Dao
 
         public List<User> SharedUsers(int itemId)
         {
-            throw new NotImplementedException();
+            string query = @"select * from Users where username in select username from Permit where itemID=@id";
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
+            da.SelectCommand.Parameters.AddWithValue("id", itemId);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<User> users = new List<User>();
+            foreach(DataRow r in dt.Rows){
+                User u = new User()
+                {
+                    Username = (string)r[0],
+                    Password = (string)r[1],
+                    IsAdmin = (bool)r[2],
+                    UsedQuota = (int)r[3],
+                    MaxQuota = (int)r[4]
+                };
+                users.Add(u);
+            }
+            return users;
         }
 
         public bool CheckPermit(int itemId, string username)
         {
-            throw new NotImplementedException();
+            using(SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string query = @"select count(*) from Permit where itemID=@id and username=@user";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@id", itemId);
+                command.Parameters.AddWithValue("@user", username);
+                return (int)command.ExecuteScalar() > 0;
+            }
         }
     }
 }
