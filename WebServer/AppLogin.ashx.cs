@@ -13,7 +13,9 @@ namespace WebServer
 
         public void ProcessRequest(HttpContext context)
         {
-            context.Response.Write("True");
+            string username = context.Request.Form["username"];
+            string password = context.Request.Form["password"];
+            context.Response.Write(username);
         }
 
         public bool IsReusable

@@ -29,18 +29,13 @@ namespace ClientApp
             HttpClient client = new HttpClient();
             var values = new Dictionary<string, string>
             {
-               { "username", "hello" },
-               { "password", "world" }
+               { "username", textBox1.Text},
+               { "password", textBox2.Text }
             };
             var content = new FormUrlEncodedContent(values);
             var response = await client.PostAsync("http://localhost:52598/AppLogin.ashx", content);
             string s = await response.Content.ReadAsStringAsync();
-            bool success = bool.Parse(s);
-            if (success)
-            {
-                
-            }
+            label1.Text = s;
         }
-
     }
 }
