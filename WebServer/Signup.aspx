@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="WebServer.Login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Signup.aspx.cs" Inherits="WebServer.Signup" %>
 
 <!DOCTYPE html>
 
@@ -11,7 +11,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div id="login" style="min-height: 635px;">
+         <div id="signup" style="min-height: 635px;">
             <div id="header">
                 <div id="logo">
                 </div>
@@ -23,8 +23,8 @@
                 <div id="generalActions">
                 </div>
             </div>
-            <div id="mainDiv">
-                <h1>Login Page</h1>
+             <div id="mainDiv">
+                <h1>Sign Up</h1>
                 <table align="center">
                     <tr>
                         <td>Username:</td>
@@ -36,12 +36,12 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <asp:Button ID="buttonLogin" runat="server" Text="Login" OnClick="buttonLogin_Click" />
+                            <asp:Button ID="buttonBack" runat="server" Text="Back" OnClick="buttonBack_Click" />
                             <asp:Button ID="buttonSignup" runat="server" Text="Sign up" OnClick="buttonSignup_Click" />
                         </td>
                     </tr>
                 </table>
-                <asp:Label ID="lblError" class="lblError" runat="server" Text=""></asp:Label>
+                <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
             </div>
         </div>
     </form>

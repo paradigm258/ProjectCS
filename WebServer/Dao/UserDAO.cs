@@ -164,5 +164,23 @@ namespace WebServer.Dao
                 return command.ExecuteNonQuery() == 1;
             }
         }
+
+        public List<string> Top20ShareableUsers(int itemId, string search)
+        {
+            string query = @"select username from Users where username in 
+(select username from Users except select username from Permit where itemID=@id) and username like @keyword";
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
+            da.SelectCommand.Parameters.AddWithValue("@id", itemId);
+            da.SelectCommand.Parameters.AddWithValue("@keyword", "%" + search + "%");
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<string> list = new List<string>();
+            for (int i = 0; i < 20; i++)
+            {
+                DataRow row = dt.Rows[i];
+                list.Add((string)row["username"]);
+            }
+            return list;
+        }
     }
 }
