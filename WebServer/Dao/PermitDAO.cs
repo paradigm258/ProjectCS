@@ -15,9 +15,11 @@ namespace WebServer.Dao
         {
             using (SqlConnection connection = new SqlConnection())
             {
+                connection.Open();
                 SqlCommand command = new SqlCommand("select count(*) from Permit where itemId=@itemID  and username = @user", connection);
                 command.Parameters.AddWithValue("@itemID", itemId);
                 command.Parameters.AddWithValue("@user", username);
+                connection.Close();
                 return (int)command.ExecuteScalar() == 1;
             }
         }

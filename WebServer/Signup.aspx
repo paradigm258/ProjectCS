@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Signup.aspx.cs" Inherits="WebServer.Signup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Signup.aspx.cs" Inherits="WebServer.Signup" %>
 
 <!DOCTYPE html>
 
@@ -11,7 +11,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-         <div id="signup" style="min-height: 635px;">
+        <div id="signup" style="min-height: 635px;">
             <div id="header">
                 <div id="logo">
                 </div>
@@ -23,16 +23,18 @@
                 <div id="generalActions">
                 </div>
             </div>
-             <div id="mainDiv">
+            <div id="mainDiv">
                 <h1>Sign Up</h1>
                 <table align="center">
                     <tr>
                         <td>Username:</td>
-                        <td><asp:TextBox ID="txtUsername" runat="server"></asp:TextBox></td>
+                        <td>
+                            <asp:TextBox ID="txtUsername" runat="server"></asp:TextBox></td>
                     </tr>
                     <tr>
                         <td>Password:</td>
-                        <td><asp:TextBox ID="txtPassword" runat="server"></asp:TextBox></td>
+                        <td>
+                            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"></asp:TextBox></td>
                     </tr>
                     <tr>
                         <td colspan="2">
