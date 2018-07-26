@@ -9,10 +9,10 @@ using WebServer.Interface;
 
 namespace WebServer.Dao
 {
-   
-    public class ItemDAO:DAO, IItemDao
+
+    public class ItemDAO : DAO, IItemDao
     {
-        
+
         //public List<Item> Files(string owner)
         //{
         //    string query = @"select * from File where owner = @owner";
@@ -21,7 +21,7 @@ namespace WebServer.Dao
         //    DataTable dt = new DataTable();
         //    da.Fill(dt);
         //    List<Item> list = new List<Item>();
-        //    foreach(DataRow dr in dt.Rows)
+        //    foreach (DataRow dr in dt.Rows)
         //    {
         //        list.Add(new Item()
         //        {
@@ -119,12 +119,12 @@ namespace WebServer.Dao
         //        return command.ExecuteNonQuery() == 1;
         //    }
         //}
-        //public bool UpdatePrivacy(int id,string privacy)
+        //public bool UpdatePrivacy(int id, string privacy)
         //{
-        //    using(SqlConnection connection = new SqlConnection(ConnectionString))
+        //    using (SqlConnection connection = new SqlConnection(ConnectionString))
         //    {
         //        Item file = this.File(id);
-                
+
         //        SqlCommand command =
         //            new SqlCommand("update File set privacy=@privacy where id=@id");
         //        command.Parameters.AddWithValue("@privacy", file.privacy == "public" ? "private" : "public");
@@ -135,47 +135,193 @@ namespace WebServer.Dao
 
         public List<Item> GetAllItemsWithNullParent(string owner)
         {
-            throw new NotImplementedException();
+            string query = "select * from Items where owner='" + owner + "'";
+            SqlDataAdapter da = new SqlDataAdapter();
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Item> itemList = new List<Item>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                Item i = new Item()
+                {
+                    id = int.Parse(dr[0].ToString()),
+                    name = dr[1].ToString(),
+                    owner = int.Parse(dr[2].ToString()),
+                    isPublic = bool.Parse(dr[3].ToString()),
+                    isFolder = bool.Parse(dr[4].ToString()),
+                    size = long.Parse(dr[5].ToString()),
+                    parent = int.Parse(dr[6].ToString()),
+                };
+                itemList.Add(i);
+            }
+            return itemList;
         }
 
         public List<Item> GetAllItemsWithParent(string owner, int parent)
         {
-            throw new NotImplementedException();
+            string query = "select * from Items where owner='" + owner + "' and parent ='" + parent + "'";
+            SqlDataAdapter da = new SqlDataAdapter();
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Item> itemList = new List<Item>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                Item i = new Item()
+                {
+                    id = int.Parse(dr[0].ToString()),
+                    name = dr[1].ToString(),
+                    owner = int.Parse(dr[2].ToString()),
+                    isPublic = bool.Parse(dr[3].ToString()),
+                    isFolder = bool.Parse(dr[4].ToString()),
+                    size = long.Parse(dr[5].ToString()),
+                    parent = int.Parse(dr[6].ToString()),
+                };
+                itemList.Add(i);
+            }
+            return itemList;
         }
 
         public Item GetItem(string owner, int id)
         {
-            throw new NotImplementedException();
+            string query = @"select * from Items where owner = '" + owner + "' and id = '" + id + "'";
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            DataRow dr = dt.Rows[0];
+            Item i = new Item()
+            {
+                id = int.Parse(dr[0].ToString()),
+                name = dr[1].ToString(),
+                owner = int.Parse(dr[2].ToString()),
+                isPublic = bool.Parse(dr[3].ToString()),
+                isFolder = bool.Parse(dr[4].ToString()),
+                size = long.Parse(dr[5].ToString()),
+                parent = int.Parse(dr[6].ToString()),
+            };
+            return i;
         }
+
 
         public Item GetItem(int id)
         {
-            throw new NotImplementedException();
+            string query = @"select * from Items where id = '" + id + "'";
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            DataRow dr = dt.Rows[0];
+            Item i = new Item()
+            {
+                id = int.Parse(dr[0].ToString()),
+                name = dr[1].ToString(),
+                owner = int.Parse(dr[2].ToString()),
+                isPublic = bool.Parse(dr[3].ToString()),
+                isFolder = bool.Parse(dr[4].ToString()),
+                size = long.Parse(dr[5].ToString()),
+                parent = int.Parse(dr[6].ToString()),
+            };
+            return i;
         }
 
         public List<Item> GetAllSharedItems(string username)
         {
-            throw new NotImplementedException();
+            string query = "select * from Items i, Permits p where i.id=p.itemID";
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            List<Item> itemList = new List<Item>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                Item i = new Item()
+                {
+                    id = int.Parse(dr[0].ToString()),
+                    name = dr[1].ToString(),
+                    owner = int.Parse(dr[2].ToString()),
+                    isPublic = bool.Parse(dr[3].ToString()),
+                    isFolder = bool.Parse(dr[4].ToString()),
+                    size = long.Parse(dr[5].ToString()),
+                    parent = int.Parse(dr[6].ToString()),
+                };
+                itemList.Add(i);
+            }
+            return itemList;
         }
 
         public bool CheckItem(string owner, string itemName)
         {
-            throw new NotImplementedException();
+            string query = "select * from Items i where i.owner='" + owner + "' and i.name='" + itemName;
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public bool UpdateItem(int id, string name, bool isPublic, long size, int parent)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string query = @"update Items set name='@name', isPublic='@isPublic', size='@size', parent='@parent'";
+                SqlConnection conn = new SqlConnection(ConnectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@isPublic", isPublic);
+                cmd.Parameters.AddWithValue("@size", size);
+                cmd.Parameters.AddWithValue("@parent", parent);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public bool AddItem(string name, string owner, bool isPublic, bool isFolder, long size, int parent)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string query = "insert into Items values (@name,@owner,@isPublic,@isFolder,@size,@parent)";
+                SqlConnection conn = new SqlConnection(ConnectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@owner", owner);
+                cmd.Parameters.AddWithValue("@isPublic", isPublic);
+                cmd.Parameters.AddWithValue("@isFolder", isFolder);
+                cmd.Parameters.AddWithValue("@size", size);
+                cmd.Parameters.AddWithValue("@parent", parent);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public bool DeleteItem(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string query = "delete from Items where id='@id'";
+                SqlConnection conn = new SqlConnection(ConnectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }

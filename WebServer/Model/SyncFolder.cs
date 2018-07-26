@@ -7,8 +7,8 @@ namespace WebServer.Model
 {
     public class SyncFolder
     {
-        public int id { get; set; }
-        public int itemId { get; set; }
-        public string username { get; set; }
+        public int ID { get; set; }
+        public int ItemID { get; set; }
+        public string Username { get; set; }
     }
 }

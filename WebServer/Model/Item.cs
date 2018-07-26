@@ -7,12 +7,12 @@ namespace WebServer.Model
 {
     public class Item
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public int Owner { get; set; }
-        public bool IsPublic { get; set; }
-        public bool IsFolder { get; set; }
-        public long Size { get; set; }
-        public int Parent { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public int owner { get; set; }
+        public bool isPublic { get; set; }
+        public bool isFolder { get; set; }
+        public long size { get; set; }
+        public int parent { get; set; }
     }
 }
