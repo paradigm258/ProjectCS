@@ -5,12 +5,12 @@ using System.Web;
 
 namespace WebServer.Model
 {
-    public class File
+    public class Item
     {
         public int id { get; set; }
-        public String name { get; set; }
+        public string name { get; set; }
         public long size { get; set; }
-        public string ownerId { get; set; }
+        public string owner { get; set; }
         public string privacy { get; set; }
     }
 }
