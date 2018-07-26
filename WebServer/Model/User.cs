@@ -7,8 +7,10 @@ namespace WebServer.Model
 {
     public class User
     {
-        public string username { get; set; }
-        public string password { get; set; }
-        public long quota { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public bool IsAdmin { get; set; }
+        public long UsedQuota { get; set; }
+        public long MaxQuota { get; set; }
     }
 }
