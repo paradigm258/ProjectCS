@@ -28,15 +28,22 @@
             </div>
             <div class="mainDiv">
                 <div id="div1">
-                    <% foreach (WebServer.Model.Item item in test)
-                        { %>
-                    <div class ="itemDisplay" onclick="location.href = 'ItemView.aspx?id='+<%: item.id %>">
+                    <% foreach (WebServer.Model.Item item in items)
+                        {
+                            if (item.isFolder)
+                            {%>
+                    <div class="itemDisplay" onclick="location.href = 'Home.aspx?id='+<%: item.id %>">
                         <%: item %>
                     </div>
-                    <% } %>
+                    <% }
+                        else
+                        {%>
+                    <div class="itemDisplay" onclick="location.href = 'ItemView.aspx?id='+<%: item.id %>">
+                        <%: item %>
+                    </div>
+                    <% }
+                        } %>
                 </div>
-                <asp:GridView ID="GridView1" runat="server">
-                </asp:GridView>
             </div>
         </div>
     </form>

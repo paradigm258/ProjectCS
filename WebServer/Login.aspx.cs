@@ -41,7 +41,7 @@ namespace WebServer
             if (userDao.CheckAdmin(username, password))
             {
                 Session["username"] = username;
-                Session["admin"] = username;
+                Session["admin"] = "admin";
                 Response.Redirect("ViewUsers.aspx", true);
             }
             if (!userDao.CheckUser(username, password))

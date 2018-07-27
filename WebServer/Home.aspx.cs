@@ -16,7 +16,7 @@ namespace WebServer
     {
         OpenFileDialog file = new OpenFileDialog();
         public Item item { get; set; }
-        public List<Item> test { get; set; }
+        public List<Item> items { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,8 +26,17 @@ namespace WebServer
                 return;
             }
             lblActiveUser.Text = (String)Session["username"];
-            test = (new ItemDAO()).GetAllItemsWithNullParent((String)Session["username"]);
-            loadItemsWithNullParent();
+            string sParent = Request.QueryString["id"];
+            int parent;
+            if (String.IsNullOrEmpty(sParent))
+            {
+                parent = 0;
+            }
+            else
+            {
+                parent = int.Parse(sParent);
+            }
+            loadItemsWithParent(parent);
         }
 
         protected void buttonLogOut_Click(object sender, EventArgs e)
@@ -47,8 +56,7 @@ namespace WebServer
                     buttonItemCategories.Text = "Shared To Me";
                     break;
                 case "Shared To Me":
-
-
+                    loadSharedItems();
                     buttonItemCategories.Text = "My Items";
                     break;
                 default:
@@ -58,18 +66,32 @@ namespace WebServer
 
         public void loadItemsWithNullParent()
         {
-            ItemDAO itemDao = new ItemDAO();
-            string username = (String)Session["username"];
-            List<Item> myItems = itemDao.GetAllItemsWithNullParent(username);
-            GridView1.DataSource = myItems;
-            GridView1.DataBind();
+            items = (new ItemDAO()).GetAllItemsWithNullParent((String)Session["username"]);
         }
 
-        
+        public void loadItemsWithParent(int parent)
+        {
+            items = (new ItemDAO()).GetAllItemsWithParent((String)Session["username"], parent);
+        }
+
+        public void loadSharedItems()
+        {
+            items = (new ItemDAO()).GetAllSharedItems((String)Session["username"]);
+        }
 
         protected void buttonAdd_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AddItem.aspx", true);
+            string sParent = Request.QueryString["id"];
+            int parent;
+            if (String.IsNullOrEmpty(sParent))
+            {
+                parent = 0;
+            }
+            else
+            {
+                parent = int.Parse(sParent);
+            }
+            Response.Redirect("AddItem.aspx?id="+parent, true);
         }
     }
 }

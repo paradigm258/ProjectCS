@@ -26,6 +26,16 @@ namespace WebServer
         {
             lblError.Text = "";
             lblNoti.Text = "";
+            string sParent = Request.QueryString["id"];
+            int parent;
+            if (String.IsNullOrEmpty(sParent))
+            {
+                parent = 0;
+            }
+            else
+            {
+                parent = int.Parse(sParent);
+            }
             HttpFileCollection uploadedFiles = Request.Files;
             string filepath = Server.MapPath("~/Storage/");
             bool hasFile = false;
@@ -48,15 +58,15 @@ namespace WebServer
                             outOfQuota = true;
                             break;
                         }
-                        if (!(new ItemDAO()).CheckItem(user.Username, userPostedFile.FileName))
+                        if (!(new ItemDAO()).CheckItem(user.Username, userPostedFile.FileName, parent))
                         {
                             (new UserDAO()).UpdateUsedQuota(user.Username, user.UsedQuota + size);
                             (new ItemDAO()).AddItem(userPostedFile.FileName, user.Username,
-                                isPublic, false, size, 0);
+                                isPublic, false, size, parent);
                             Item item = (new ItemDAO()).GetItem(user.Username, userPostedFile.FileName);
                             (new PermitDAO()).AddPermit(item.id, item.owner);
                         }
-                        userPostedFile.SaveAs(filepath + Path.GetFileName(userPostedFile.FileName));
+                        userPostedFile.SaveAs(filepath + (new ItemDAO()).GetItem(user.Username, userPostedFile.FileName).id);
                     }
                 }
                 catch (Exception Ex)
@@ -70,30 +80,10 @@ namespace WebServer
             }
             if (outOfQuota)
             {
-                //lblError.Text = "Upload incomplete! Out of quota";
-                lblError.Text = totalSize + " " + user.MaxQuota;
+                lblError.Text = "Upload incomplete! Out of quota";
                 return;
             }
             lblNoti.Text = "Upload succeeded";
-
-
-            //if (FileUploadControl.HasFiles)
-            //{
-            //    try
-            //    {
-            //        FileUploadControl.
-            //        string filename = Path.GetFileName(FileUploadControl.FileName);
-            //        FileUploadControl.SaveAs(Server.MapPath("~/Storage/") + filename);
-            //        lblError.Text = Server.MapPath("~/Storage/") + filename;
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //    }
-            //}
-            //else
-            //{
-            //    lblError.Text = "Please choose file";
-            //}
         }
 
         protected void buttonBack_Click(object sender, EventArgs e)
@@ -106,6 +96,36 @@ namespace WebServer
             Session["username"] = null;
             Session["admin"] = null;
             Response.Redirect("Login.aspx", true);
+        }
+
+        protected void buttonNewFolder_Click(object sender, EventArgs e)
+        {
+            lblError.Text = "";
+            lblNoti.Text = "";
+            string folderName = txtFolderName.Text;
+            if (String.IsNullOrEmpty(folderName))
+            {
+                lblError.Text = "Type in folder name";
+            }
+            string sParent = Request.QueryString["id"];
+            int parent;
+            if (String.IsNullOrEmpty(sParent))
+            {
+                parent = 0;
+            }
+            else
+            {
+                parent = int.Parse(sParent);
+            }
+            User user = (new UserDAO()).GetUser((String)Session["username"]);
+            if (!(new ItemDAO()).CheckItem(user.Username, folderName, parent))
+            {
+                (new ItemDAO()).AddItem(folderName, user.Username,
+                    true, true, 0, parent);
+                Item item = (new ItemDAO()).GetItem(user.Username, folderName);
+                (new PermitDAO()).AddPermit(item.id, item.owner);
+            }
+            lblNoti.Text = "Folder added";
         }
     }
 }
