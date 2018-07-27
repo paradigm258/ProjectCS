@@ -9,6 +9,7 @@ using WebServer.Model;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
+using WebServer.Interface;
 
 namespace WebServer
 {
@@ -17,7 +18,7 @@ namespace WebServer
         OpenFileDialog file = new OpenFileDialog();
         public Item item { get; set; }
         public List<Item> items { get; set; }
-
+        int parent;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["username"] == null)
@@ -27,7 +28,6 @@ namespace WebServer
             }
             lblActiveUser.Text = (String)Session["username"];
             string sParent = Request.QueryString["id"];
-            int parent;
             if (String.IsNullOrEmpty(sParent))
             {
                 parent = 0;
@@ -81,17 +81,29 @@ namespace WebServer
 
         protected void buttonAdd_Click(object sender, EventArgs e)
         {
-            string sParent = Request.QueryString["id"];
-            int parent;
-            if (String.IsNullOrEmpty(sParent))
+            Response.Redirect("AddItem.aspx?id=" + parent, true);
+        }
+
+        protected void buttonDelete_Click(object sender, EventArgs e)
+        {
+            IItemDao dao = new Dao.ItemDAO();
+            deleteFolder(parent, dao);
+        }
+        void deleteFolder(int parent, IItemDao dao)
+        {
+            List<Item> list = dao.GetAllItemsWithParent((string)Session["username"], parent);
+            foreach (Item i in list)
             {
-                parent = 0;
+                if (i.isFolder)
+                {
+                    deleteFolder(i.id, dao);
+                }
+                else
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Storage/" + i.id));
+                }
+                dao.DeleteItem(i.id);
             }
-            else
-            {
-                parent = int.Parse(sParent);
-            }
-            Response.Redirect("AddItem.aspx?id="+parent, true);
         }
     }
 }

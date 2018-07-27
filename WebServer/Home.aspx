@@ -22,6 +22,7 @@
                 </div>
                 <div id="generalActions">
                     <asp:Button ID="buttonAdd" CssClass="generalActionsElement" runat="server" Text="Add" OnClick="buttonAdd_Click" />
+                    <asp:Button ID="buttonDelete" CssClass="generalActionsElement" runat="server" Text="Delete" OnClick="buttonDelete_Click" />
                     <asp:Button ID="buttonItemCategories" CssClass="generalActionsElement" runat="server" Text="Shared To Me" OnClick="buttonItemCategories_Click" />
                     <asp:Button ID="buttonLogOut" CssClass="generalActionsElement" runat="server" Text="Log Out" OnClick="buttonLogOut_Click" />
                 </div>
