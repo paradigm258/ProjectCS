@@ -18,7 +18,7 @@ namespace WebServer
         OpenFileDialog file = new OpenFileDialog();
         public Item item { get; set; }
         public List<Item> items { get; set; }
-        int parent;
+        public int parent;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["username"] == null)
@@ -86,24 +86,29 @@ namespace WebServer
 
         protected void buttonDelete_Click(object sender, EventArgs e)
         {
-            IItemDao dao = new Dao.ItemDAO();
-            deleteFolder(parent, dao);
+            deleteFolder(parent);
+            Response.Redirect("Home.aspx", true);
         }
-        void deleteFolder(int parent, IItemDao dao)
+        void deleteFolder(int parent)
         {
-            List<Item> list = dao.GetAllItemsWithParent((string)Session["username"], parent);
+            List<Item> list = (new ItemDAO()).GetAllItemsWithParent((string)Session["username"], parent);
             foreach (Item i in list)
             {
                 if (i.isFolder)
                 {
-                    deleteFolder(i.id, dao);
+                    deleteFolder(i.id);
                 }
                 else
                 {
+                    long newQuota = (new UserDAO()).GetUser((String)Session["username"]).UsedQuota - i.size;
                     System.IO.File.Delete(Server.MapPath("~/Storage/" + i.id));
+                    (new UserDAO()).UpdateUsedQuota((String)Session["username"], newQuota);
+                    (new PermitDAO()).DeleteAllPermit(i.id);
+                    (new ItemDAO()).DeleteItem(i.id);
                 }
-                dao.DeleteItem(i.id);
             }
+            (new PermitDAO()).DeleteAllPermit(parent);
+            (new ItemDAO()).DeleteItem(parent);
         }
     }
 }

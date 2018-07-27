@@ -70,8 +70,9 @@ namespace WebServer
                         userPostedFile.SaveAs(filepath + (new ItemDAO()).GetItem(user.Username, userPostedFile.FileName).id);
                     }
                 }
-                catch (Exception Ex)
+                catch (Exception ex)
                 {
+                    System.Diagnostics.Debug.WriteLine(ex.Message + "at" + ex.Source + ":" + ex.StackTrace);
                 }
             }
             if (!hasFile)

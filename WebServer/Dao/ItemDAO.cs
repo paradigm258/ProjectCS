@@ -159,7 +159,7 @@ namespace WebServer.Dao
 
         public List<Item> GetAllItemsWithParent(string owner, int parent)
         {
-            string query = "select * from Items where owner='" + owner + "' and parent =" + parent;
+            string query = "select * from Items where [owner]='" + owner + "' and parent =" + parent;
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
