@@ -49,7 +49,7 @@ namespace WebServer.Dao
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("delete from Permit where itemId=@id and username=@user",connection);
+                SqlCommand command = new SqlCommand("delete from Permits where itemId=@id and username=@user",connection);
                 command.Parameters.AddWithValue("@id", itemId);
                 command.Parameters.AddWithValue(@"user", user);
                 connection.Open();
@@ -59,7 +59,7 @@ namespace WebServer.Dao
 
         public List<User> SharedUsers(int itemId)
         {
-            string query = @"select * from Users where username in select username from Permit where itemID=@id";
+            string query = @"select * from Users where username in select username from Permits where itemID=@id";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             da.SelectCommand.Parameters.AddWithValue("id", itemId);
             DataTable dt = new DataTable();
@@ -83,10 +83,11 @@ namespace WebServer.Dao
         {
             using(SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string query = @"select count(*) from Permit where itemID=@id and username=@user";
+                string query = @"select count(*) from Permits where itemID=@id and username=@user";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@id", itemId);
                 command.Parameters.AddWithValue("@user", username);
+                connection.Open();
                 return (int)command.ExecuteScalar() > 0;
             }
         }

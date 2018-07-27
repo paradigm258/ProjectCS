@@ -159,7 +159,7 @@ namespace WebServer.Dao
 
         public List<Item> GetAllItemsWithParent(string owner, int parent)
         {
-            string query = "select * from Items where owner='" + owner + "' and parent ='" + parent + "'";
+            string query = "select * from Items where owner='" + owner + "' and parent =" + parent;
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -224,7 +224,7 @@ namespace WebServer.Dao
 
         public List<Item> GetAllSharedItems(string username)
         {
-            string query = "select * from Items i, Permits p where i.id=p.itemID";
+            string query = "select * from Items i, Permits p where i.id=p.itemID and username = '"+username+"'";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -249,6 +249,19 @@ namespace WebServer.Dao
         public bool CheckItem(string owner, string itemName)
         {
             string query = "select * from Items i where i.owner='" + owner + "' and i.name='" + itemName + "'";
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool CheckItem(string owner, string itemName, int parent)
+        {
+            string query = "select * from Items i where i.owner='" + owner + "' and i.name='" + itemName + "' and parent = "+parent;
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);

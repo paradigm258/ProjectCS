@@ -15,6 +15,7 @@ namespace WebServer.Interface
         Item GetItem(int id);
         List<Item> GetAllSharedItems(string username);//get all items shared to this user
         bool CheckItem(string owner, string itemName);//check if user has already uploaded this item or not
+        bool CheckItem(string owner, string itemName, int parent);
         bool UpdateItem(int id, string name, bool isPublic, long size, int parent);//update according to id
         bool AddItem(string name, string owner, bool isPublic, bool isFolder, long size, int parent);
         bool DeleteItem(int id);

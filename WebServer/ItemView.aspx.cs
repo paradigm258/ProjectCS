@@ -12,6 +12,9 @@ namespace WebServer
     public partial class ItemView : System.Web.UI.Page
     {
         Item i;
+
+        public bool isOwner;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["username"] == null)
@@ -22,7 +25,19 @@ namespace WebServer
             lblActiveUser.Text = (String)Session["username"];
             String id = Request.QueryString["id"];
             i = (new ItemDAO()).GetItem(int.Parse(id));
+
             Name.Text = i.name;
+            isOwner = i.owner.Equals((String)Session["username"]);
+            if (!isOwner)
+            {
+                if (!i.isPublic)
+                {
+                    if(!(new PermitDAO()).CheckPermit(i.id, (String)Session["username"])){
+                        Response.Redirect("Home.aspx", true);
+                    }
+                }
+                return;
+            }
             if (i.isPublic)
             {
                 buttonSwitchPrivacy.Text = "Switch to Private";
@@ -87,12 +102,13 @@ namespace WebServer
 
         protected void buttonDelete_Click(object sender, EventArgs e)
         {
-
+            lblError.Text = "";
+            lblError.Text = "delete";
         }
 
         protected void buttonDownload_Click(object sender, EventArgs e)
         {
-
+            Response.Redirect("Download.ashx?id="+i.id, true);
         }
     }
 }

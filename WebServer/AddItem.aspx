@@ -26,20 +26,44 @@
                 </div>
             </div>
             <div id="mainDiv">
-                <h1>Add Item</h1>
-                <table align="center">
-                    <tr>
-                        <td><asp:FileUpload id="FileUploadControl" AllowMultiple="true" runat="server" /></td>
-                        <td><asp:CheckBox ID="IsPublic" runat="server" Text="Is Public" /></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <asp:Button ID="buttonAdd" runat="server" Text="Add" OnClick="buttonAdd_Click" />
-                        </td>
-                    </tr>
-                </table>
+                <div class="itemActionsElement">
+                    <h1>New Folder</h1>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <asp:Label ID="Label1" runat="server" Text="Enter folder name: "></asp:Label></td>
+                            <td>
+                                <asp:TextBox ID="txtFolderName" runat="server"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <asp:Button ID="buttonNewFolder" runat="server" Text="Add New Folder" OnClick="buttonNewFolder_Click" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="itemActionsElement">
+                    <h1>Add Item</h1>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <asp:FileUpload ID="FileUploadControl" AllowMultiple="true" runat="server" /></td>
+                            <td>
+                                <asp:CheckBox ID="IsPublic" runat="server" Text="Is Public" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <asp:Button ID="buttonAdd" runat="server" Text="Add" OnClick="buttonAdd_Click" />
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+            <div style="text-align: center; min-height: 30px; width: 100%; position:fixed; top: 75%;">
                 <asp:Label ID="lblError" class="lblError" runat="server" Text=""></asp:Label>
-                <asp:Label ID="lblNoti" class="lblNoti" runat="server" Text=""></asp:Label>
+                <asp:Label ID="lblNoti" Style="color: #6495ED;" runat="server" Text=""></asp:Label>
             </div>
         </div>
     </form>
