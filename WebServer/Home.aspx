@@ -32,21 +32,31 @@
             </div>
             <div class="mainDiv">
                 <div id="div1">
+                    <div class="itemDisplay" style="background-color: #6495ED;font-weight:bold;">
+                        <span class="itemDisplayElement">Name</span>|
+                        <span class="itemDisplayElement">Owner</span>|
+                        <span class="itemDisplayElement">Size</span>
+                    </div>
                     <% foreach (WebServer.Model.Item item in items)
                         {
                             if (item.isFolder)
-                            {%>
+                            { %>
                     <div class="itemDisplay" onclick="location.href = 'Home.aspx?id='+<%: item.id %>">
-                        <%: item %>
+                        <span class="itemDisplayElement"><%: item %></span>|
+                        <span class="itemDisplayElement"><%: item.owner %></span>|
+                        <span class="itemDisplayElement">--</span>
                     </div>
                     <% }
                         else
-                        {%>
+                        { %>
                     <div class="itemDisplay" onclick="location.href = 'ItemView.aspx?id='+<%: item.id %>">
-                        <%: item %>
+                        <span class="itemDisplayElement"><%: item %></span>|
+                        <span class="itemDisplayElement"><%: item.owner %></span>|
+                        <span class="itemDisplayElement"><%: item.size/1024 %>KB</span>
                     </div>
-                    <% }
-                        } %>
+                    <% }  %>
+                        
+                       <% } %>
                 </div>
             </div>
         </div>

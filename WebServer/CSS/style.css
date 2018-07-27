@@ -135,6 +135,18 @@
     color: aliceblue;
 }
 
-.itemDisplay{
-    text-align:center;
+.itemDisplay {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    min-height: 30px;
+    min-width:100px;
+    padding:0 100px;
+    margin: 5px 0;
+}
+
+.itemDisplayElement{
+    width: 150px;
+    font-size:20px;
+    
 }

@@ -224,7 +224,7 @@ namespace WebServer.Dao
 
         public List<Item> GetAllSharedItems(string username)
         {
-            string query = "select * from Items i, Permits p where i.id=p.itemID and username = '"+username+"'";
+            string query = "select * from Items where id in (select itemID from Permits where username='"+username+"' except select id from Items where owner='"+username+"')" ;
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
