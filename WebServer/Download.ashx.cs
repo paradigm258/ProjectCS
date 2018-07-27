@@ -20,11 +20,18 @@ namespace WebServer
             HttpResponse response = context.Response;
             try
             {
-                
-
-                string fileName = "Software Requirements 3, 3rd Edition.pdf";
-                string filePath = context.Server.MapPath("~/Storage/");
-                FileInfo file = new FileInfo(filePath + fileName);
+                int id = 0;
+                try
+                {
+                    id = int.Parse(request.QueryString["id"]);
+                }
+                catch
+                {
+                    id = 0;
+                }
+                Model.Item item = new Dao.ItemDAO().GetItem(id);
+                string filePath = context.Server.MapPath("~/Storage/")+item.id;
+                FileInfo file = new FileInfo(filePath);
                 if (file.Exists)
                 {
                     long length = file.Length;
@@ -60,8 +67,8 @@ namespace WebServer
                         end = length - 1;
                     }
                     response.Clear();
-                    response.ContentType = MimeMapping.GetMimeMapping(fileName);
-                    response.AddHeader("Content-Disposition", $"attachment;filename=\"{fileName}\"");
+                    response.ContentType = MimeMapping.GetMimeMapping(item.name);
+                    response.AddHeader("Content-Disposition", $"attachment;filename=\"{item.name}\"");
                     response.AddHeader("Accept-Ranges", "bytes");
                     response.AddHeader("Content-Range", "bytes " + start + "-" + end + "/" + length);
                     response.AddHeader("Content-Length", "" + (end - start + 1));
@@ -69,7 +76,7 @@ namespace WebServer
                     {
                         response.StatusCode = (int)HttpStatusCode.PartialContent;
                     }
-                    response.TransmitFile(filePath + fileName, start, end - start);
+                    response.TransmitFile(filePath, start, end - start);
                 }
             }
             catch (Exception e)
