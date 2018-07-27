@@ -9,7 +9,7 @@ namespace WebServer.Model
     {
         public int id { get; set; }
         public string name { get; set; }
-        public int owner { get; set; }
+        public string owner { get; set; }
         public bool isPublic { get; set; }
         public bool isFolder { get; set; }
         public long size { get; set; }

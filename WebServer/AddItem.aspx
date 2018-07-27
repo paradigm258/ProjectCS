@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Signup.aspx.cs" Inherits="WebServer.Signup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddItem.aspx.cs" Inherits="WebServer.AddItem" %>
 
 <!DOCTYPE html>
 
@@ -11,34 +11,30 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div id="signup" style="min-height: 635px;">
+        <div id="addItem" style="min-height: 635px;">
             <div id="header">
                 <div id="logo">
                 </div>
                 <div id="logoMask" onclick="redirectToHomePage()">
                 </div>
                 <div id="activeUser">
+                    <asp:Label ID="lblActiveUser" runat="server" Text=""></asp:Label>
                 </div>
                 <div id="generalActions">
+                    <asp:Button ID="buttonBack" CssClass="generalActionsElement" runat="server" Text="Back" OnClick="buttonBack_Click" />
+                    <asp:Button ID="buttonLogOut" CssClass="generalActionsElement" runat="server" Text="Log Out" OnClick="buttonLogOut_Click" />
                 </div>
             </div>
             <div id="mainDiv">
-                <h1>Sign Up</h1>
+                <h1>Add Item</h1>
                 <table align="center">
                     <tr>
-                        <td>Username:</td>
-                        <td>
-                            <asp:TextBox ID="txtUsername" runat="server"></asp:TextBox></td>
-                    </tr>
-                    <tr>
-                        <td>Password:</td>
-                        <td>
-                            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"></asp:TextBox></td>
+                        <td><asp:FileUpload id="FileUploadControl" AllowMultiple="true" runat="server" /></td>
+                        <td><asp:CheckBox ID="IsPublic" runat="server" Text="Is Public" /></td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <asp:Button ID="buttonBack" runat="server" Text="Back" OnClick="buttonBack_Click" />
-                            <asp:Button ID="buttonSignup" runat="server" Text="Sign up" OnClick="buttonSignup_Click" />
+                            <asp:Button ID="buttonAdd" runat="server" Text="Add" OnClick="buttonAdd_Click" />
                         </td>
                     </tr>
                 </table>

@@ -18,7 +18,6 @@
                 <div id="logoMask" onclick="redirectToHomePage()">
                 </div>
                 <div id="activeUser">
-                    <asp:Label ID="lblActiveUser" runat="server" Text="Label"></asp:Label>
                 </div>
                 <div id="generalActions">
                 </div>
@@ -32,7 +31,7 @@
                     </tr>
                     <tr>
                         <td>Password:</td>
-                        <td><asp:TextBox ID="txtPassword" runat="server"></asp:TextBox></td>
+                        <td><asp:TextBox ID="txtPassword" runat="server" TextMode="Password"></asp:TextBox></td>
                     </tr>
                     <tr>
                         <td colspan="2">

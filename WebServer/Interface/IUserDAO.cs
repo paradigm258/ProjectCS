@@ -10,13 +10,14 @@ namespace WebServer.Interface
     interface IUserDAO
     {
         bool CheckUser(string username, string password); // check dung' hay k
+        bool CheckAdmin(string username, string password);
         bool CheckUsername(string username); //check co' username chua //true= co'
         User GetUser(string username);
         List<string> Top20ShareableUsers(int itemId, string search);//filter theo search // like '%search%'
         bool AddUser(string username, string password);//isAdmin = false//quota = 0
         bool DeleteUser(string username);//delete het tat ca lien quan den user trong ca? 4 bang?
         List<User> GetAllUsers();//co' paging
-        bool UpdateUsedQuota(string username, int newUsedQuota);
-        bool UpdateMaxQuota(string username, int newMaxQuota);
+        bool UpdateUsedQuota(string username, long newUsedQuota);
+        bool UpdateMaxQuota(string username, long newMaxQuota);
     }
 }

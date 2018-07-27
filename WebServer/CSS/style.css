@@ -12,6 +12,7 @@
     box-shadow: 0 8px 6px -3px grey;
     top: 0px;
     left: 0px;
+    z-index: 1;
 }
 
 #logo{
@@ -37,7 +38,6 @@
     min-width: 20px;
     height: 20px;
     float: right;
-    background: red;
     width: 47px;
 }
 
@@ -47,18 +47,23 @@
     height: 60px;
     display: flex;
     flex-direction: row;
-    background: red;
     justify-content: space-around;
+}
+
+.generalActionsElement {
+    height: 30px;
+    margin: 15px;
+    display: flex;
 }
 
 /*login*/
 
-#login #mainDiv {
+#login #mainDiv, #signup #mainDiv, #addItem #mainDiv {
     position: fixed;
     top: 30%;
     left: 30%;
-    height: 30%;
-    width: 40%;
+    height: 200px;
+    width: 500px;
     margin: 0;
     padding: 2% 1% 2% 1%;
     display: inline-block;
@@ -67,13 +72,34 @@
     box-shadow: 0 8px 6px -3px grey
 }
 
-/*signup*/
-#login #mainDiv {
+/*itemView*/
+
+#itemView #itemManager {
+    height: 300px;
+    width: 100%;
     position: fixed;
-    top: 30%;
-    left: 30%;
-    height: 30%;
-    width: 40%;
+    top: 20%;
+}
+
+#itemView #itemName {
+    text-align:center;
+    height: 100px;
+}
+
+#itemView #Name {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#itemView #itemActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#itemView .itemActionsElement {
+    height: 200px;
+    width: 500px;
     margin: 0;
     padding: 2% 1% 2% 1%;
     display: inline-block;
@@ -83,7 +109,21 @@
 }
 
 /*common function*/
+.mainDiv {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    min-height: 500px;
+}
 
 .lblError {
     color: red;
+}
+
+.lblNoti {
+    color: aliceblue;
+}
+
+.itemDisplay{
+    text-align:center;
 }
