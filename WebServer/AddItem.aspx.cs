@@ -60,7 +60,8 @@ namespace WebServer
                         }
                         if (!(new ItemDAO()).CheckItem(user.Username, userPostedFile.FileName, parent))
                         {
-                            (new UserDAO()).UpdateUsedQuota(user.Username, user.UsedQuota + size);
+                            user.UsedQuota += size;
+                            (new UserDAO()).UpdateUsedQuota(user.Username, user.UsedQuota);
                             (new ItemDAO()).AddItem(userPostedFile.FileName, user.Username,
                                 isPublic, false, size, parent);
                             Item item = (new ItemDAO()).GetItem(user.Username, userPostedFile.FileName);
