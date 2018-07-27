@@ -15,7 +15,9 @@ namespace WebServer
         {
             string username = context.Request.Form["username"];
             string password = context.Request.Form["password"];
-            context.Response.Write(username);
+            Interface.IUserDAO dAO = new Dao.UserDAO();
+            System.Diagnostics.Debug.WriteLine(username + "" + password);
+            context.Response.Write(dAO.CheckUser(username, password).ToString());
         }
 
         public bool IsReusable

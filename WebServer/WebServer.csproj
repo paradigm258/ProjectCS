@@ -71,7 +71,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FileForm.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Image\cloudIcon.png" />
     <Content Include="Image\fileIcon.png" />
@@ -102,13 +101,6 @@
     <Compile Include="Dao\UserDAO.cs" />
     <Compile Include="Download.ashx.cs">
       <DependentUpon>Download.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="FileForm.aspx.cs">
-      <DependentUpon>FileForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="FileForm.aspx.designer.cs">
-      <DependentUpon>FileForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
@@ -170,7 +162,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52598</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52598/</IISUrl>
+          <IISUrl>http://localhost:52598</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
