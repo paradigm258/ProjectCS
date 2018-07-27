@@ -29,7 +29,7 @@ namespace WebServer
             {
                 case "Select":                  
                     Session["username"] = user.Username;
-                    Response.Redirect("Home");
+                    Response.Redirect("Home.aspx");
                     break;
                 case "Edit":
                     Label2.Text = user.Username;

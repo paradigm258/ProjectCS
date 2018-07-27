@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -102,8 +103,13 @@ namespace WebServer
 
         protected void buttonDelete_Click(object sender, EventArgs e)
         {
-            lblError.Text = "";
-            lblError.Text = "delete";
+            long newQuota = (new UserDAO()).GetUser((String)Session["username"]).UsedQuota - i.size;
+            FileInfo file = new FileInfo(Server.MapPath("~/Storage/") + i.id);
+            file.Delete();
+            (new PermitDAO()).DeleteAllPermit(i.id);
+            (new ItemDAO()).DeleteItem(i.id);
+            (new UserDAO()).UpdateUsedQuota((String)Session["username"], newQuota);
+            Response.Redirect("Home.aspx", true);
         }
 
         protected void buttonDownload_Click(object sender, EventArgs e)

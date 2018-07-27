@@ -76,6 +76,7 @@ namespace WebServer
                     {
                         response.StatusCode = (int)HttpStatusCode.PartialContent;
                     }
+                    System.Diagnostics.Debug.WriteLine(file.Name);
                     response.TransmitFile(filePath, start, end - start);
                 }
             }

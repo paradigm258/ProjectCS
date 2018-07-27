@@ -318,7 +318,7 @@ namespace WebServer.Dao
         {
             try
             {
-                string query = "delete from Items where id='@id'";
+                string query = "delete from Items where id=@id";
                 SqlConnection conn = new SqlConnection(ConnectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(query, conn);
