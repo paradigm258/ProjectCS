@@ -10,7 +10,7 @@
 namespace WebServer {
     
     
-    public partial class Home {
+    public partial class AddItem {
         
         /// <summary>
         /// form1 control.
@@ -31,22 +31,13 @@ namespace WebServer {
         protected global::System.Web.UI.WebControls.Label lblActiveUser;
         
         /// <summary>
-        /// buttonAdd control.
+        /// buttonBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonAdd;
-        
-        /// <summary>
-        /// buttonItemCategories control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonItemCategories;
+        protected global::System.Web.UI.WebControls.Button buttonBack;
         
         /// <summary>
         /// buttonLogOut control.
@@ -58,12 +49,48 @@ namespace WebServer {
         protected global::System.Web.UI.WebControls.Button buttonLogOut;
         
         /// <summary>
-        /// GridView1 control.
+        /// FileUploadControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::System.Web.UI.WebControls.FileUpload FileUploadControl;
+        
+        /// <summary>
+        /// IsPublic control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox IsPublic;
+        
+        /// <summary>
+        /// buttonAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonAdd;
+        
+        /// <summary>
+        /// lblError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblError;
+        
+        /// <summary>
+        /// lblNoti control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoti;
     }
 }

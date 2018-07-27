@@ -11,7 +11,7 @@ namespace WebServer.Interface
     {
         List<Item> GetAllItemsWithNullParent(string owner);
         List<Item> GetAllItemsWithParent(string owner, int parent);
-        Item GetItem(string owner, int id);//get all info of item
+        Item GetItem(string owner, string name);//get all info of item
         Item GetItem(int id);
         List<Item> GetAllSharedItems(string username);//get all items shared to this user
         bool CheckItem(string owner, string itemName);//check if user has already uploaded this item or not

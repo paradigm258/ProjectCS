@@ -38,7 +38,13 @@ namespace WebServer
             }
 
             UserDAO userDao = new UserDAO();
-            if(!userDao.CheckUser(username, password))
+            if (userDao.CheckAdmin(username, password))
+            {
+                Session["username"] = username;
+                Session["admin"] = username;
+                Response.Redirect("ViewUsers.aspx", true);
+            }
+            if (!userDao.CheckUser(username, password))
             {
                 lblError.Text = "Username or password is wrong";
                 return;

@@ -135,8 +135,8 @@ namespace WebServer.Dao
 
         public List<Item> GetAllItemsWithNullParent(string owner)
         {
-            string query = "select * from Items where owner='" + owner + "'";
-            SqlDataAdapter da = new SqlDataAdapter();
+            string query = "select * from Items where owner='" + owner + "' and parent = 0";
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<Item> itemList = new List<Item>();
@@ -144,13 +144,13 @@ namespace WebServer.Dao
             {
                 Item i = new Item()
                 {
-                    id = int.Parse(dr[0].ToString()),
-                    name = dr[1].ToString(),
-                    owner = int.Parse(dr[2].ToString()),
-                    isPublic = bool.Parse(dr[3].ToString()),
-                    isFolder = bool.Parse(dr[4].ToString()),
-                    size = long.Parse(dr[5].ToString()),
-                    parent = int.Parse(dr[6].ToString()),
+                    id = (int)dr["id"],
+                    name = (string)dr["name"],
+                    owner = (string)dr["owner"],
+                    isPublic = (bool)dr["isPublic"],
+                    isFolder = (bool)dr["isFolder"],
+                    size = (long)dr["size"],
+                    parent = (int)dr["parent"]
                 };
                 itemList.Add(i);
             }
@@ -160,7 +160,7 @@ namespace WebServer.Dao
         public List<Item> GetAllItemsWithParent(string owner, int parent)
         {
             string query = "select * from Items where owner='" + owner + "' and parent ='" + parent + "'";
-            SqlDataAdapter da = new SqlDataAdapter();
+            SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<Item> itemList = new List<Item>();
@@ -168,35 +168,35 @@ namespace WebServer.Dao
             {
                 Item i = new Item()
                 {
-                    id = int.Parse(dr[0].ToString()),
-                    name = dr[1].ToString(),
-                    owner = int.Parse(dr[2].ToString()),
-                    isPublic = bool.Parse(dr[3].ToString()),
-                    isFolder = bool.Parse(dr[4].ToString()),
-                    size = long.Parse(dr[5].ToString()),
-                    parent = int.Parse(dr[6].ToString()),
+                    id = (int)dr["id"],
+                    name = (string)dr["name"],
+                    owner = (string)dr["owner"],
+                    isPublic = (bool)dr["isPublic"],
+                    isFolder = (bool)dr["isFolder"],
+                    size = (long)dr["size"],
+                    parent = (int)dr["parent"]
                 };
                 itemList.Add(i);
             }
             return itemList;
         }
 
-        public Item GetItem(string owner, int id)
+        public Item GetItem(string owner, string name)
         {
-            string query = @"select * from Items where owner = '" + owner + "' and id = '" + id + "'";
+            string query = @"select * from Items where owner = '" + owner + "' and name = '" + name + "'";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
             DataRow dr = dt.Rows[0];
             Item i = new Item()
             {
-                id = int.Parse(dr[0].ToString()),
-                name = dr[1].ToString(),
-                owner = int.Parse(dr[2].ToString()),
-                isPublic = bool.Parse(dr[3].ToString()),
-                isFolder = bool.Parse(dr[4].ToString()),
-                size = long.Parse(dr[5].ToString()),
-                parent = int.Parse(dr[6].ToString()),
+                id = (int)dr["id"],
+                name = (string)dr["name"],
+                owner = (string)dr["owner"],
+                isPublic = (bool)dr["isPublic"],
+                isFolder = (bool)dr["isFolder"],
+                size = (long)dr["size"],
+                parent = (int)dr["parent"]
             };
             return i;
         }
@@ -211,13 +211,13 @@ namespace WebServer.Dao
             DataRow dr = dt.Rows[0];
             Item i = new Item()
             {
-                id = int.Parse(dr[0].ToString()),
-                name = dr[1].ToString(),
-                owner = int.Parse(dr[2].ToString()),
-                isPublic = bool.Parse(dr[3].ToString()),
-                isFolder = bool.Parse(dr[4].ToString()),
-                size = long.Parse(dr[5].ToString()),
-                parent = int.Parse(dr[6].ToString()),
+                id = (int)dr["id"],
+                name = (string)dr["name"],
+                owner = (string)dr["owner"],
+                isPublic = (bool)dr["isPublic"],
+                isFolder = (bool)dr["isFolder"],
+                size = (long)dr["size"],
+                parent = (int)dr["parent"]
             };
             return i;
         }
@@ -233,13 +233,13 @@ namespace WebServer.Dao
             {
                 Item i = new Item()
                 {
-                    id = int.Parse(dr[0].ToString()),
-                    name = dr[1].ToString(),
-                    owner = int.Parse(dr[2].ToString()),
-                    isPublic = bool.Parse(dr[3].ToString()),
-                    isFolder = bool.Parse(dr[4].ToString()),
-                    size = long.Parse(dr[5].ToString()),
-                    parent = int.Parse(dr[6].ToString()),
+                    id = (int)dr["id"],
+                    name = (string)dr["name"],
+                    owner = (string)dr["owner"],
+                    isPublic = (bool)dr["isPublic"],
+                    isFolder = (bool)dr["isFolder"],
+                    size = (long)dr["size"],
+                    parent = (int)dr["parent"]
                 };
                 itemList.Add(i);
             }
@@ -248,7 +248,7 @@ namespace WebServer.Dao
 
         public bool CheckItem(string owner, string itemName)
         {
-            string query = "select * from Items i where i.owner='" + owner + "' and i.name='" + itemName;
+            string query = "select * from Items i where i.owner='" + owner + "' and i.name='" + itemName + "'";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -263,7 +263,7 @@ namespace WebServer.Dao
         {
             try
             {
-                string query = @"update Items set name='@name', isPublic='@isPublic', size='@size', parent='@parent'";
+                string query = @"update Items set name=@name, isPublic=@isPublic, size=@size, parent=@parent where id = @id";
                 SqlConnection conn = new SqlConnection(ConnectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -271,6 +271,7 @@ namespace WebServer.Dao
                 cmd.Parameters.AddWithValue("@isPublic", isPublic);
                 cmd.Parameters.AddWithValue("@size", size);
                 cmd.Parameters.AddWithValue("@parent", parent);
+                cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 return true;
@@ -283,27 +284,22 @@ namespace WebServer.Dao
 
         public bool AddItem(string name, string owner, bool isPublic, bool isFolder, long size, int parent)
         {
-            try
-            {
-                string query = "insert into Items values (@name,@owner,@isPublic,@isFolder,@size,@parent)";
-                SqlConnection conn = new SqlConnection(ConnectionString);
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@name", name);
-                cmd.Parameters.AddWithValue("@owner", owner);
-                cmd.Parameters.AddWithValue("@isPublic", isPublic);
-                cmd.Parameters.AddWithValue("@isFolder", isFolder);
-                cmd.Parameters.AddWithValue("@size", size);
-                cmd.Parameters.AddWithValue("@parent", parent);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
+
+            string query = "insert into Items values (@name,@owner,@isPublic,@isFolder,@size,@parent)";
+            SqlConnection conn = new SqlConnection(ConnectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@owner", owner);
+            cmd.Parameters.AddWithValue("@isPublic", isPublic);
+            cmd.Parameters.AddWithValue("@isFolder", isFolder);
+            cmd.Parameters.AddWithValue("@size", size);
+            cmd.Parameters.AddWithValue("@parent", parent);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            return true;
         }
+
 
         public bool DeleteItem(int id)
         {

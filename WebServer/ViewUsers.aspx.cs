@@ -11,6 +11,12 @@ namespace WebServer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["admin"] == null)
+            {
+                Response.Redirect("Login.aspx", true);
+                return;
+            }
+            lblActiveUser.Text = (String)Session["admin"];
         }
 
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -26,6 +32,13 @@ namespace WebServer
                 default:
                     break;
             }
+        }
+
+        protected void buttonLogOut_Click(object sender, EventArgs e)
+        {
+            Session["username"] = null;
+            Session["admin"] = null;
+            Response.Redirect("Login.aspx", true);
         }
     }
 }

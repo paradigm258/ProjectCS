@@ -23,6 +23,20 @@ namespace WebServer.Dao
                 return (int)command.ExecuteScalar() == 1;
             }
         }
+
+        public bool CheckAdmin(string username, string password)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string query = @"select count(*) from Users where username=@username and password=@password and isAdmin = @isAdmin";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", password);
+                command.Parameters.AddWithValue("@isAdmin", true);
+                connection.Open();
+                return (int)command.ExecuteScalar() == 1;
+            }
+        }
         public bool CheckUsername(string username)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
@@ -47,7 +61,10 @@ namespace WebServer.Dao
                 return new User()
                 {
                     Username = (string)dr["username"],
-                    Password = (string)dr["password"]
+                    Password = (string)dr["password"],
+                    IsAdmin = (bool)dr["isAdmin"],
+                    UsedQuota = (long)dr["usedQuota"],
+                    MaxQuota = (long)dr["maxQuota"]
                 };
             }
             return null;
@@ -71,7 +88,7 @@ namespace WebServer.Dao
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand command = new SqlCommand("insert into Users values(@username,@password,0,0,2048)",connection);
+                SqlCommand command = new SqlCommand("insert into Users values(@username,@password,0,0,2147483648)", connection);
                 command.Parameters.AddWithValue("@username", username);
                 command.Parameters.AddWithValue("@password", password);
                 connection.Open();
@@ -104,8 +121,8 @@ namespace WebServer.Dao
                     Username = (string)r[0],
                     Password = (string)r[1],
                     IsAdmin = (bool)r[2],
-                    UsedQuota = (int)r[3],
-                    MaxQuota = (int)r[4]
+                    UsedQuota = (long)r[3],
+                    MaxQuota = (long)r[4]
                 });
             }
             return List;
@@ -124,14 +141,15 @@ namespace WebServer.Dao
 
         public List<string> Top20ShareableUsers(int id, string search)
         {
-            string query = @"select username from Users where username in (select username from User except select username from Permit where itemID=@id) and username like @keyword";
+            string query = @"select username from Users where username in (select username from Users except select username from Permits where itemID=@id) and username like @keyword";
             SqlDataAdapter da = new SqlDataAdapter(query, ConnectionString);
             da.SelectCommand.Parameters.AddWithValue("@id", id);
             da.SelectCommand.Parameters.AddWithValue("@keyword", "%" + search + "%");
             DataTable dt = new DataTable();
             da.Fill(dt);
             List<string> list = new List<string>();
-            for (int i = 0; i < 20; i++)
+            int limit = dt.Rows.Count >= 20 ? 20 : dt.Rows.Count;
+            for (int i = 0; i < limit; i++)
             {
                 DataRow row = dt.Rows[i];
                 list.Add((string)row["username"]);
@@ -139,7 +157,7 @@ namespace WebServer.Dao
             return list;
         }
 
-        public bool UpdateUsedQuota(string username, int newUsedQuota)
+        public bool UpdateUsedQuota(string username, long newUsedQuota)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
@@ -152,7 +170,7 @@ namespace WebServer.Dao
             }
         }
 
-        public bool UpdateMaxQuota(string username, int newMaxQuota)
+        public bool UpdateMaxQuota(string username, long newMaxQuota)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
